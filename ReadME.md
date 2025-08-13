@@ -28,6 +28,9 @@ The API exposes th following endpoints
    - POST `/alerts`: To write alert data to the database.
    - GET `/alerts` : To read alerts by service_id and time range.
 
+6. UI Page:
+   - GET `/ariana` : Serves a simple static HTML page showcasing Ariana Grande and her studio albums. Open `http://localhost:8080/ariana` in a browser after running the server.
+
 ## Result
 
 ### Write Alerts

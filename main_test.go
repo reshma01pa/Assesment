@@ -130,3 +130,30 @@ func TestReadAlertsHandler(t *testing.T) {
 		t.Errorf("Response does not match the expected response.")
 	}
 }
+
+func TestArianaPageHandler(t *testing.T) {
+	req := httptest.NewRequest("GET", "/ariana", nil)
+	rr := httptest.NewRecorder()
+
+	ArianaPageHandler(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected 200 OK, got %d", rr.Code)
+	}
+	if ctype := rr.Header().Get("Content-Type"); ctype != "text/html; charset=utf-8" {
+		t.Fatalf("unexpected content type: %s", ctype)
+	}
+	if body := rr.Body.String(); len(body) == 0 || !contains(body, "Ariana Grande") {
+		t.Fatalf("unexpected body: %q", body)
+	}
+}
+
+// contains is a tiny helper to avoid importing strings just for one assertion
+func contains(haystack, needle string) bool {
+	for i := 0; i+len(needle) <= len(haystack); i++ {
+		if haystack[i:i+len(needle)] == needle {
+			return true
+		}
+	}
+	return false
+}
