@@ -7,6 +7,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"net/http"
+	"os"
 )
 
 // Alert represents the structure of an alert.
@@ -48,13 +49,24 @@ func main() {
 	r.HandleFunc("/ariana", ArianaPageHandler).Methods("GET")
 
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	addr := ":" + port
+	log.Printf("Listening on %s", addr)
+	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
 // Initialize the SQLite database.
 func initializeDatabase() {
 	var err error
-	db, err = sql.Open("sqlite3", "myproject.db")
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "myproject.db"
+	}
+	db, err = sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}

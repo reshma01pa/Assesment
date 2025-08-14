@@ -9,6 +9,7 @@ import (
 	_ "log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
@@ -27,6 +28,8 @@ func (m *MockDB) Query(query string, args ...interface{}) (*sql.Rows, error) {
 }
 
 func TestWriteAlertHandler(t *testing.T) {
+	// Use in-memory SQLite for tests
+	os.Setenv("DB_PATH", ":memory:")
 	// Initialize the SQLite database
 	initializeDatabase()
 
@@ -62,6 +65,8 @@ func TestWriteAlertHandler(t *testing.T) {
 
 // Similarly, you can create tests for ReadAlertsHandler using the MockDB.
 func TestReadAlertsHandler(t *testing.T) {
+	// Use in-memory SQLite for tests
+	os.Setenv("DB_PATH", ":memory:")
 	// Initialize the SQLite database
 	initializeDatabase()
 
